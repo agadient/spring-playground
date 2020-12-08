@@ -1,8 +1,6 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -20,7 +18,7 @@ public class HelloController {
     }
 
     @GetMapping("/math/calculate")
-    public Map calculate(@RequestParam Map querystring) {
+    public String calculate(@RequestParam Map querystring) {
         String operation = "";
         if (querystring.containsKey("operation")) {
             operation = (String) querystring.get("operation");
@@ -44,7 +42,28 @@ public class HelloController {
         } else {
             result = String.format("%d + %d = %d", x, y, x+y);
         }
-        return querystring;
+        return result;
+    }
+
+    @PostMapping("/math/sum")
+    public String sum(@RequestParam String[] n) {
+        if (n.length == 0) {
+            return "No params!";
+        }
+        String result = "";
+        Integer sum = 0;
+        for (int i = 0; i < n.length-1; i++) {
+            sum += Integer.parseInt(n[i]);
+            result = result.concat(String.format("%s + ", n[i]));
+        }
+        sum += Integer.parseInt(n[n.length-1]);
+        result = result.concat(String.format("%s = %d", n[n.length-1], sum));
+        return result;
+    }
+
+    @RequestMapping("/math/volume/{l}/{w}/{h}")
+    public String volume(@PathVariable int l, @PathVariable int w, @PathVariable int h) {
+        return String.format("The volume of a %dx%dx%d rectangle is %d", l, w, h, l*w*h);
     }
 
 
