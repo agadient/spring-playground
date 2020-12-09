@@ -122,4 +122,17 @@ public class HelloControllerTest {
                         "\"tickets\":[{\"passenger\":{\"firstName\":\"Some Name\",\"lastName\":\"Some other name\"}," +
                         "\"price\":200}]}"));
     }
+
+    @Test
+    public void testFlights() throws Exception {
+        this.mvc.perform(
+                get("/flights")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"departs\":\"2017-04-21 14:34\",\"tickets\"" +
+                        ":[{\"passenger\":{\"firstName\":\"Some Name\",\"lastName\":\"Some other name\"},\"price" +
+                        "\":200}]},{\"departs\":\"2017-04-21 14:34\",\"tickets\":[{\"passenger\":{\"firstName\"" +
+                        ":\"Some Name\"},\"price\":400}]}]"));
+    }
 }

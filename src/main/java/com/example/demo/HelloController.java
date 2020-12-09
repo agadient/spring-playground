@@ -1,10 +1,10 @@
 package com.example.demo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -63,16 +63,16 @@ public class HelloController {
 
     @GetMapping("/flights/flight")
     public Flight getFlight() throws ParseException {
-        return getFlightOne();
+        return constructFlightOne();
     }
 
     @GetMapping("/flights")
     public Flight[] getFlights() throws ParseException {
-        Flight[] flights = {getFlightOne()};
+        Flight[] flights = {constructFlightOne(), constructFlightTwo()};
         return flights;
     }
 
-    public static Flight getFlightOne() {
+    public static Flight constructFlightOne() {
         Passenger passenger = new Passenger();
         passenger.firstName = "Some Name";
         passenger.lastName = "Some other name";
@@ -88,13 +88,13 @@ public class HelloController {
         return flight;
     }
 
-    public static Flight getFlightTwo() {
+    public static Flight constructFlightTwo() {
         Passenger passenger = new Passenger();
         passenger.firstName = "Some Name";
-        passenger.lastName = "Some other name";
+        passenger.lastName = null;
         Ticket ticket = new Ticket();
         ticket.passenger = passenger;
-        ticket.price = new Integer(200);
+        ticket.price = new Integer(400);
         Ticket[] tickets = {ticket};
         Flight flight = new Flight();
         flight.tickets = tickets;
@@ -116,7 +116,7 @@ public class HelloController {
         public Date getDeparts() {
             return departs;
         }}
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Passenger {
         private String firstName;
         private String lastName;
