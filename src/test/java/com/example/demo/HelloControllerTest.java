@@ -8,6 +8,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.is;
@@ -135,4 +138,22 @@ public class HelloControllerTest {
                         "\":200}]},{\"departs\":\"2017-04-21 14:34\",\"tickets\":[{\"passenger\":{\"firstName\"" +
                         ":\"Some Name\"},\"price\":400}]}]"));
     }
+
+    @Test
+    public void testTicketSum() throws Exception {
+        String flight = getJSON("/flight.json");
+        String result = getJSON("/result.json");
+        MockHttpServletRequestBuilder request = post("/flights/tickets/total")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(flight);
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(result));
+    }
+    private String getJSON(String path) throws Exception {
+        URL url = this.getClass().getResource(path);
+        return new String(Files.readAllBytes(Paths.get(url.getFile())));
+    }
+
 }

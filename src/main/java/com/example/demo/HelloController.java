@@ -72,6 +72,17 @@ public class HelloController {
         return flights;
     }
 
+    @PostMapping("/flights/tickets/total")
+    public Sum getTotal(@RequestBody Flight flight) {
+        Sum cost = new Sum();
+        cost.result = 0;
+        for (int i = 0; i < flight.tickets.length; i++) {
+                cost.result += flight.tickets[i].price;
+        }
+        return cost;
+    }
+
+
     public static Flight constructFlightOne() {
         Passenger passenger = new Passenger();
         passenger.firstName = "Some Name";
@@ -104,8 +115,16 @@ public class HelloController {
         return flight;
     }
 
+    public static class Sum {
+        Integer result = 0;
+        public Integer getResult() {
+            return result;
+        }
+    }
+
     public static class Flight {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="UTC")
+
         private Date departs;
         private Ticket[] tickets;
 
