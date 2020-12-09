@@ -1,8 +1,14 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
 @RestController
 public class HelloController {
@@ -55,5 +61,85 @@ public class HelloController {
         return result;
     }
 
+    @GetMapping("/flights/flight")
+    public Flight getFlight() throws ParseException {
+        return getFlightOne();
+    }
 
+    @GetMapping("/flights")
+    public Flight[] getFlights() throws ParseException {
+        Flight[] flights = {getFlightOne()};
+        return flights;
+    }
+
+    public static Flight getFlightOne() {
+        Passenger passenger = new Passenger();
+        passenger.firstName = "Some Name";
+        passenger.lastName = "Some other name";
+        Ticket ticket = new Ticket();
+        ticket.passenger = passenger;
+        ticket.price = new Integer(200);
+        Ticket[] tickets = {ticket};
+        Flight flight = new Flight();
+        flight.tickets = tickets;
+        Calendar departdate = new Calendar.Builder().setTimeZone(TimeZone.getTimeZone("UTC"))
+                .setDate(2017,3,21).setTimeOfDay(14,34,00).build();
+        flight.departs = departdate.getTime();
+        return flight;
+    }
+
+    public static Flight getFlightTwo() {
+        Passenger passenger = new Passenger();
+        passenger.firstName = "Some Name";
+        passenger.lastName = "Some other name";
+        Ticket ticket = new Ticket();
+        ticket.passenger = passenger;
+        ticket.price = new Integer(200);
+        Ticket[] tickets = {ticket};
+        Flight flight = new Flight();
+        flight.tickets = tickets;
+        Calendar departdate = new Calendar.Builder().setTimeZone(TimeZone.getTimeZone("UTC"))
+                .setDate(2017,3,21).setTimeOfDay(14,34,00).build();
+        flight.departs = departdate.getTime();
+        return flight;
+    }
+
+    public static class Flight {
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="UTC")
+        private Date departs;
+        private Ticket[] tickets;
+
+        public Ticket[] getTickets() {
+            return tickets;
+        }
+
+        public Date getDeparts() {
+            return departs;
+        }}
+
+    public static class Passenger {
+        private String firstName;
+        private String lastName;
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }}
+
+    public static class Ticket {
+        private Passenger passenger;
+        private Integer price;
+
+        public Passenger getPassenger() {
+            return passenger;
+        }
+
+        public Integer getPrice() {
+            return price;
+        }
+
+    }
 }

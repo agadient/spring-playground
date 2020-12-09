@@ -5,8 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Date;
+
+import static org.hamcrest.Matchers.is;
+
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -103,5 +109,17 @@ public class HelloControllerTest {
         this.mvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().string("Area of a 4x7 rectangle is 28"));
+    }
+
+    @Test
+    public void testObject() throws Exception {
+        this.mvc.perform(
+                get("/flights/flight")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"departs\":\"2017-04-21 14:34\"," +
+                        "\"tickets\":[{\"passenger\":{\"firstName\":\"Some Name\",\"lastName\":\"Some other name\"}," +
+                        "\"price\":200}]}"));
     }
 }
