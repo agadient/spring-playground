@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Lesson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(required = false)
     private Long id;
     private String title;
 
