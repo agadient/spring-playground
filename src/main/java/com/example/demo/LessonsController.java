@@ -2,6 +2,8 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,6 +48,16 @@ public class LessonsController {
             return oldL;
         }
         return lesson;
+    }
+
+    @GetMapping("/find/{title}")
+    public List<Lesson> update(@PathVariable String title) {
+        return this.repository.findByTitle(title);
+    }
+
+    @GetMapping("/find/between")
+    public List<Lesson> update(@RequestParam Date date1, @RequestParam Date date2) {
+        return this.repository.findByDates(date1, date2);
     }
 
 
