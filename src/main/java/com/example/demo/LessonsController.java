@@ -14,7 +14,7 @@ public class LessonsController {
         this.repository = repository;
     }
 
-    @GetMapping("")
+    @GetMapping("/all_lessons")
     public Iterable<Lesson> all() {
         return this.repository.findAll();
     }
