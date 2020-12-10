@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Lesson {
 
     @Column(columnDefinition = "date")
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date deliveredOn;
 
     public Long getId() {
