@@ -7,14 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-
 @Component
 public class WordCounter {
     private Config config;
-    @Bean
-    public WordCounter WordCounter(Config config) {
+    public WordCounter(Config config) {
         this.config = config;
-        return new WordCounter();
     }
 
     Map<String, Integer> count (String s) {
@@ -23,9 +20,11 @@ public class WordCounter {
             s = s.toLowerCase();
         }
         s = s.replaceAll("\\p{P}", "");
+
         for (String skip : this.config.getSkip()) {
             s = s.replaceAll(skip, "");
         }
+
         String[] s_split = s.split(" ");
         for (String word : s_split) {
             if (return_value.containsKey(word)) {
