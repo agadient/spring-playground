@@ -15,4 +15,5 @@ public class WordCounterController {
         WordCounter wc =new WordCounter();
         return wc.count(words);
     }
+
 }
