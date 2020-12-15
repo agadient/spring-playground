@@ -6,6 +6,10 @@ import org.springframework.web.client.RestTemplate;
 @Service // <------ #1
 public class MoviesService {
 
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
+    }
+
     private final RestTemplate restTemplate = new RestTemplate(); // <------ #2
 
     public String getMovies(String query) {
